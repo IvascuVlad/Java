@@ -1,31 +1,24 @@
-package com.company;
+import com.github.javafaker.Faker;
 
 import java.util.*;
 
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public class Main {
+public class Main{
 
     public static void main(String[] args) {
-        Resident r0 = new Resident("R0");
-        Resident r1 = new Resident("R1");
-        Resident r2 = new Resident("R2");
-        Resident r3 = new Resident("R3");
-
-        Hospital h0 = new Hospital("H0",1);
-        Hospital h1 = new Hospital("H1",2);
-        Hospital h2 = new Hospital("H2",2);
+        Faker faker = new Faker();
 
         List<Resident> residentList = new ArrayList<>();
 
         //creating objects
         Resident[] r = IntStream.rangeClosed(0, 3)
-                .mapToObj(i -> new Resident("R" + i) )
+                .mapToObj(i -> new Resident(faker.gameOfThrones().character()/*"R"+i*/) )
                 .toArray(Resident[]::new);
 
         Hospital[] h = IntStream.rangeClosed(0, 2)
-                .mapToObj(i -> new Hospital("H" + i) )
+                .mapToObj(i -> new Hospital(faker.gameOfThrones().dragon()/*"H" + i*/) )
                 .toArray(Hospital[]::new);
         Integer[] capacitate = {1,2,2};
         for (int i = 0; i < h.length; i++) {
@@ -42,11 +35,11 @@ public class Main {
         //sort
         Collections.sort(residentList,Comparator.comparing(Resident::getName));
 
-        System.out.println("Sorted residents: ");
+        /*System.out.println("Sorted residents: ");
         for (Resident resident : residentList) {
             System.out.println(resident);
         }
-        System.out.println(" ");
+        System.out.println(" ");*/
 
         Set<Hospital> hospitalList = new TreeSet<>();
         hospitalList.addAll( Arrays.asList(h) );
@@ -57,18 +50,18 @@ public class Main {
         resPrefMap.put(r[2], Arrays.asList(h[0], h[1]));
         resPrefMap.put(r[3], Arrays.asList(h[0], h[2]));
 
-        System.out.println("Map of residents: ");
+        /*System.out.println("Map of residents: ");
         System.out.println(residentList);
-        System.out.println(" ");
+        System.out.println(" ");*/
 
         Map<Hospital, List<Resident>> hosPrefMap = new TreeMap<>();
         hosPrefMap.put(h[0], Arrays.asList(r[3], r[0], r[1], r[2]));
         hosPrefMap.put(h[1], Arrays.asList(r[0], r[2], r[1]));
         hosPrefMap.put(h[2], Arrays.asList(r[0], r[1], r[3]));
 
-        System.out.println("Map of hospitals: ");
+        /*System.out.println("Map of hospitals: ");
         System.out.println(hosPrefMap);
-        System.out.println(" ");
+        System.out.println(" ");*/
 
         /*System.out.println("Residents who find acceptable H0 and H2: ");
         List<Hospital> target = Arrays.asList(h[0], h[2]);
@@ -89,13 +82,19 @@ public class Main {
 
         //Optional
         Problem problem = new Problem(resPrefMap,hosPrefMap);
-        for (Resident resident:resPrefMap.keySet()) {
-            System.out.print(resident);
-            System.out.println(resPrefMap.get(resident));
+        problem.print();
+        /*for (Resident resident:resPrefMap.keySet()) {
+            System.out.println(resident);
+            //System.out.println(resPrefMap.get(resident));
             for (Hospital hospital : resPrefMap.get(resident)) {
-                
+                System.out.print(hospital.toString());
             }
+            System.out.println(hosPrefMap.size());
         }
+
+        for (Hospital hospital:hosPrefMap.keySet()) {
+            System.out.println(hospital.getCapacity());
+        }*/
 
     }
 }
