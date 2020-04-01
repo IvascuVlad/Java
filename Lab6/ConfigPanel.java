@@ -23,20 +23,61 @@ public class ConfigPanel extends JPanel {
         //create the colorCombo, containing the values: Random and Black
         String [] values = {"Random","Black"};
         colorCombo = new JComboBox(values);
-        add(sidesLabel); //JPanel uses FlowLayout by default
-        add(sidesField);
-        add(colorCombo);
-        colorCombo.addActionListener(this::actiune);
-        sidesField.addChangeListener(this::change);
+        if(frame.shapePanel.shapeContor == 3)
+        {
+            add(sidesLabel); //JPanel uses FlowLayout by default
+            add(sidesField);
+            sidesField.addChangeListener(this::change);
+            add(colorCombo);
+            colorCombo.addActionListener(this::actiune);
+        }
+    }
+
+    public void deletingToShapes(){
+        if(frame.shapePanel.shapeContor == 1){
+            this.remove(frame.configPanel.colorCombo);
+        }
+        if(frame.shapePanel.shapeContor == 0){
+            this.remove(frame.configPanel.colorCombo);
+            this.remove(frame.configPanel.sidesLabel);
+            this.remove(frame.configPanel.sidesField);
+        }
+    }
+
+    public void adaptingToShapes(){
+        //this.frame = frame;
+        if(frame.shapePanel.shapeContor == 1)
+        {
+            sidesLabel = new JLabel("Number of sides:");
+            sidesField = new JSpinner(new SpinnerNumberModel(0, 0, 100, 1));
+            sidesField.setValue(6); //default number of sides
+            //create the colorCombo, containing the values: Random and Black
+            String [] values = {"Random","Black"};
+            colorCombo = new JComboBox(values);
+            add(colorCombo);
+            colorCombo.addActionListener(this::actiune);
+        }
+        if(frame.shapePanel.shapeContor == 0)
+        {
+            sidesLabel = new JLabel("Number of sides:");
+            sidesField = new JSpinner(new SpinnerNumberModel(0, 0, 100, 1));
+            sidesField.setValue(6); //default number of sides
+            //create the colorCombo, containing the values: Random and Black
+            String [] values = {"Random","Black"};
+            colorCombo = new JComboBox(values);
+            add(sidesLabel); //JPanel uses FlowLayout by default
+            add(sidesField);
+            sidesField.addChangeListener(this::change);
+            add(colorCombo);
+            colorCombo.addActionListener(this::actiune);
+        }
     }
 
     private void change(ChangeEvent changeEvent) {
         int result = (int) sidesField.getValue();
-        System.out.println(result);
     }
 
     private void actiune(ActionEvent actionEvent) {
         String result = colorCombo.getSelectedItem().toString();
-        System.out.println(result);
     }
 }

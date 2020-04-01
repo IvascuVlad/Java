@@ -3,12 +3,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 
-public class ControlPanel extends JPanel {
+public class ControlPanel<optione> extends JPanel {
     final MainFrame frame;
     JButton saveBtn = new JButton("Save");
     JButton loadBtn = new JButton("Load");
@@ -45,16 +42,30 @@ public class ControlPanel extends JPanel {
 
     private void load(ActionEvent actionEvent) {
         try {
-            BufferedImage image = ImageIO.read(new FileInputStream("C:\\Users\\ivasc\\Desktop\\Anul_II\\semestrul 2\\Java\\lab6\\test.png"));
-            frame.canvas.image = image;
-            frame.canvas.graphics = image.createGraphics();
-            frame.canvas.repaint();
+            JFrame jFrame = new JFrame();
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setDialogTitle("Choose File");
+            int option = fileChooser.showSaveDialog(jFrame);
+            if (option == JFileChooser.APPROVE_OPTION) {
+                File file = fileChooser.getSelectedFile();
+                BufferedImage image = ImageIO.read(file);
+                frame.canvas.image = image;
+                frame.canvas.graphics = image.createGraphics();
+                frame.canvas.repaint();
+            }
         } catch (IOException ex) { System.err.println(ex); }
     }
 
     private void save(ActionEvent e) {
         try {
-            ImageIO.write(frame.canvas.image, "PNG", new FileOutputStream("C:\\Users\\ivasc\\Desktop\\Anul_II\\semestrul 2\\Java\\lab6\\test.png"));
+            JFrame jFrame = new JFrame();
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setDialogTitle("Choose File");
+            int option = fileChooser.showSaveDialog(jFrame);
+            if (option == JFileChooser.APPROVE_OPTION) {
+                File file = fileChooser.getSelectedFile();
+                ImageIO.write(frame.canvas.image, "PNG", file);
+            }
         } catch (IOException ex) { System.err.println(ex); }
     }
 }
