@@ -48,10 +48,6 @@ public class ConfigPanel extends JPanel {
         //this.frame = frame;
         if(frame.shapePanel.shapeContor == 1)
         {
-            sidesLabel = new JLabel("Number of sides:");
-            sidesField = new JSpinner(new SpinnerNumberModel(0, 0, 100, 1));
-            sidesField.setValue(6); //default number of sides
-            //create the colorCombo, containing the values: Random and Black
             String [] values = {"Random","Black"};
             colorCombo = new JComboBox(values);
             add(colorCombo);
