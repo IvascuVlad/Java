@@ -1,11 +1,7 @@
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         /* Parametrii jocului : numarul de token-uri si k*/
-        Game game = new Game(8,3);
+        Game game = new Game(100,4,1000);
         game.startGame();
     }
 }
