@@ -27,6 +27,7 @@ public class SmartPlayer implements Player,Runnable {
         }
         if(game.board.getList()[tokens.get(tokens.size()-1).number-1 + ratio].number > 0) {
             System.out.println(playerId + ": token valid");
+            /*returenaza din lista de tokeni tokenul din lista player-ului + ratia*/
             return game.board.getList()[tokens.get(tokens.size()-1).number-1 + ratio].number;
         }
         else {
