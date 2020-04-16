@@ -18,24 +18,24 @@ public class ArtistController {
             while(rs1.next())
                 id = rs1.getInt(1);
             id++;
-            System.out.println("Incerc sa inserez artistul cu id = "+id);
 
             sql = "insert into ARTISTS values (" + id + ", '" + name + "','" + country +"')";
             Statement stmt2=database.con.createStatement();
             stmt2.executeQuery(sql);
-            System.out.println("Am creat utilizatorul "+ name +" cu id = "+id);
         }catch(Exception e){ System.out.println(e);}
     }
-    public void findByName(String name){
+    public int findByName(String name){
         try{
             String sql = "select * from ARTISTS where NAME=?";
             PreparedStatement stmt=database.con.prepareStatement(sql);
             stmt.setString(1,name);
             ResultSet rs=stmt.executeQuery();
-            System.out.println("Am gasit artistul");
-            while(rs.next())
-                System.out.println(rs.getInt(1)+"  "+rs.getString(2)+"  "+rs.getString(3));
+            while(rs.next()) {
+                //System.out.println(rs.getInt(1) + "  " + rs.getString(2) + "  " + rs.getString(3));
+                return rs.getInt(1);
+            }
 
         }catch(Exception e){ System.out.println(e);}
+        return 0;
     }
 }

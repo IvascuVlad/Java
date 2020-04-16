@@ -18,25 +18,24 @@ public class AlbumController {
             while(rs1.next())
                 id = rs1.getInt(1);
             id++;
-            System.out.println("Incerc sa inserez albumul cu id = "+id);
 
             sql = "insert into ALBUMS values (" + id + ", ' " + name + " ','" + artistId + "' ," + releaseYear + ")";
             Statement stmt2=database.con.createStatement();
             stmt2.executeQuery(sql);
-            System.out.println("Am creat albumul "+ name +" cu id = "+id);
         }catch(Exception e){ System.out.println(e);}
     }
 
-    public void  findByArtist(int artistId){
+    public int findByArtist(int artistId){
         try{
             String sql = "select * from ALBUMS where ARTIST_ID = ?";
             PreparedStatement stmt=database.con.prepareStatement(sql);
             stmt.setInt(1,artistId);
             ResultSet rs=stmt.executeQuery();
-            System.out.println("Am gasit albumul/albumele");
-            while(rs.next())
-                System.out.println(rs.getInt(1)+"  "+rs.getString(2)+"  "+rs.getInt(3)+"  "+rs.getInt(4));
+            return rs.getInt(1);
+            /*while(rs.next())
+                System.out.println(rs.getInt(1)+"  "+rs.getString(2)+"  "+rs.getInt(3)+"  "+rs.getInt(4));*/
 
         }catch(Exception e){ System.out.println(e);}
+        return 0;
     }
 }
