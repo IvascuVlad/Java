@@ -4,12 +4,6 @@ public class Board {
 
     public Board(int dimensiune) {
         this.board = new int[dimensiune][dimensiune];
-        for (int[] ints : board) {
-            for (int anInt : ints) {
-                System.out.print(anInt + " ");
-            }
-            System.out.println("");
-        }
     }
 
     public boolean validMove(int x, int y ,int port){

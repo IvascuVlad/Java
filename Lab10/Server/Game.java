@@ -1,6 +1,7 @@
 public class Game {
     boolean itsOver = false;
     int id;
+    public Player turn;
     Board board;
     Player player1;
     Player player2;
@@ -9,18 +10,21 @@ public class Game {
     public Game(int id, int playerPort) {
         this.board = new Board(15);
         this.id = id;
-        this.player1 = new Player(playerPort);
+        this.player1 = new Player(playerPort,"Dorel");
+        this.turn = player1;
     }
 
     public boolean joinGame(int playerPort){
         if(player2 == null && player1.getPlayerPort() !=playerPort) {
-            this.player2 = new Player(playerPort);
+            this.player2 = new Player(playerPort,"Cantemir");
             return true;
         }
         return false;
     }
 
-    public boolean submitMove(int x, int y, int port){ return board.validMove(x, y,port); }
+    public boolean submitMove(int x, int y, int port,Player you){
+        return board.validMove(x, y,port);
+    }
 
     public Player getPlayer1() {
         return player1;
@@ -40,5 +44,13 @@ public class Game {
             }
         }
         return false;
+    }
+
+    public synchronized void changeTurn(Player you) {
+        if( you == player1 )
+            turn = player2;
+        else
+            turn= player1;
+        notifyAll();
     }
 }

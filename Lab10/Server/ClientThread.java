@@ -85,13 +85,27 @@ public class ClientThread extends Thread{
                         for (Game game : games) {
                             /*caut in lista jocul la care esti inscris*/
                             if(game.getPlayer1().getPlayerPort() == socket.getPort() || game.getPlayer2().getPlayerPort() == socket.getPort()){
-                                if(!game.itsOver) {
+                                Player you;
+                                if (game.getPlayer1().getPlayerPort() == socket.getPort())
+                                    you = game.getPlayer1();
+                                else
+                                    you = game.getPlayer2();
+                                System.out.println("Playerul " + you.getPlayerPort() + " asteata sa isi inceapa tura");
+                                while(game.turn != you) {
+                                    try {
+                                        Thread.sleep(5000);
+                                    } catch (InterruptedException e) {
+                                        e.printStackTrace();
+                                    }
+                                    System.out.println("Playerul " + you.getPlayerPort() + " se plictiseste si stie ca e tura " + game.turn.getPlayerPort());
+                                }
+                                if (!game.itsOver) {
                                     String coordonate = request.substring(12);
                                     int x = Integer.parseInt(coordonate.substring(0, coordonate.indexOf("_")));
                                     int y = Integer.parseInt(coordonate.substring(coordonate.indexOf("_") + 1));
                                     System.out.println(x + " " + y);
                                     /*bucla pana cand se introduc coordonate valide*/
-                                    while (!game.submitMove(x, y, socket.getPort())) {
+                                    while (!game.submitMove(x, y, socket.getPort(),you)) {
                                         out.println("Coordonate_invalide");
                                         out.flush();
 
@@ -100,30 +114,37 @@ public class ClientThread extends Thread{
                                         x = Integer.parseInt(request.substring(0, request.indexOf("_")));
                                         y = Integer.parseInt(request.substring(request.indexOf("_") + 1));
                                     }
-                                    if(game.checkOver()) {
+                                    if (game.checkOver()) {
                                         game.itsOver = true;
-                                        if(game.getPlayer1().getPlayerPort() == socket.getPort())
+                                        if (game.getPlayer1().getPlayerPort() == socket.getPort())
                                             game.winner = game.player1;
                                         else
                                             game.winner = game.player2;
                                         String raspuns = "Felicitari ai castigat";
                                         System.out.println("La revedere campionule !");
+                                        game.turn = null;
                                         rulare = false;
+
+                                        /*creaza fisierul ToHTML.html care contine o reprezentare a jocului
+                                        si il incarca prin sftp la adresa specificata*/
+                                        new ToHTML(game);
+
                                         out.println(raspuns);
                                         out.flush();
                                         //request = "exit";
-                                    }
-                                    else {
+                                    } else {
                                         System.out.println("Coordonate bune adaug piesa " + game.board.getBoard()[x][y]);
+                                        game.turn = null;
                                         String raspuns = "Piesa adaugata";
                                         out.println(raspuns);
                                         out.flush();
                                     }
-                                }
-                                else {
+                                    game.changeTurn(you);
+                                } else {
                                     String raspuns = "Ne parare rau dar ai pierdut";
                                     System.out.println("La revedere jucatorule!");
-                                    rulare=false;
+                                    game.turn = null;
+                                    rulare = false;
 
                                     out.println(raspuns);
                                     out.flush();
