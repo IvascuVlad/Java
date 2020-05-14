@@ -1,7 +1,5 @@
 package com.example.demo;
 
-import net.bytebuddy.dynamic.loading.InjectionClassLoader;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -12,7 +10,7 @@ import java.util.UUID;
 public class Player {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    public UUID id;
+    private UUID id;
     String name;
 
     public String getName() {
