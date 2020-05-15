@@ -15,6 +15,7 @@ public class DesignPanel extends JPanel {
     }
 
     private void init() {
+        /*pentru pozitionare absoluta*/
         setLayout(null);
         setPreferredSize(new Dimension(W, H));
     }
@@ -27,6 +28,7 @@ public class DesignPanel extends JPanel {
             Constructor ctor  = Class.forName(className).getConstructor(signature);
             JComponent jComponent = (JComponent) ctor.newInstance(name);
 
+            /*pentru pozitionarea componentelor*/
             Dimension size = jComponent.getPreferredSize();
             Random random = new Random();
             jComponent.setBounds(random.nextInt(W-1), random.nextInt(H-1), size.width, size.height);
